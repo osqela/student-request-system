@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>მოთხოვნის გაგზავნა</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>მოთხოვნის გაგზავნა</h2>
+    <form id="requestForm">
+        <div class="form-group">
+            <label for="firstName">სახელი:</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div class="form-group">
+            <label for="lastName">გვარი:</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <button type="submit">მოთხოვნის გაგზავნა</button>
+    </form>
+
+    <script>
+        document.getElementById('requestForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+
+            try {
+                const response = await fetch('/api/submit-request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ firstName, lastName })
+                });
+
+                if (response.ok) {
+                    alert('მოთხოვნა წარმატებით გაიგზავნა!');
+                    document.getElementById('requestForm').reset();
+                } else {
+                    alert('დაფიქსირდა შეცდომა, სცადეთ თავიდან');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('დაფიქსირდა შეცდომა, სცადეთ თავიდან');
+            }
+        });
+    </script>
+</body>
+</html>
